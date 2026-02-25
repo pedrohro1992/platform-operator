@@ -1,0 +1,44 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: manager-role
+rules:
+- apiGroups:
+  - external-secrets.io
+  resources:
+  - clustersecretstores
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - security.platform.io
+  resources:
+  - vaultconnections
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - security.platform.io
+  resources:
+  - vaultconnections/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - security.platform.io
+  resources:
+  - vaultconnections/status
+  verbs:
+  - get
+  - patch
+  - update

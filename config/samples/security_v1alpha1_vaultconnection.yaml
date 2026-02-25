@@ -1,0 +1,9 @@
+apiVersion: security.platform.io/v1alpha1
+kind: VaultConnection
+metadata:
+  name: vault-backend # Sem namespace agora!
+spec:
+  vaultUrl: "http://vault.cacetinho.internal.infra:8200"
+  authPath: "kubernetes"
+  mountPath: "secret"
+  vaultRole: "eso-role"
