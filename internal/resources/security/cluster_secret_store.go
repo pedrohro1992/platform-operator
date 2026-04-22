@@ -21,7 +21,7 @@ func SyncClusterSecretStore(vc *securityv1alpha1.VaultConnection) *esv1.ClusterS
 		Spec: esv1.SecretStoreSpec{
 			Provider: &esv1.SecretStoreProvider{
 				Vault: &esv1.VaultProvider{
-					Server:  vc.Spec.VaultUrl,
+					Server:  vc.Spec.VaultURL,
 					Path:    ptr.To(vc.Spec.MountPath),
 					Version: esv1.VaultKVStoreV2,
 					Auth: &esv1.VaultAuth{

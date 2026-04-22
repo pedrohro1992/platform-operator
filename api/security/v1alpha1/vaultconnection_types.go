@@ -32,7 +32,7 @@ type VaultConnectionSpec struct {
 
 	// foo is an example field of VaultConnection. Edit vaultconnection_types.go to remove/update
 	// +optional
-	VaultUrl  string `json:"vaultUrl"`
+	VaultURL  string `json:"vaultUrl"`
 	AuthPath  string `json:"authPath"`
 	MountPath string `json:"mountPath"`
 	VaultRole string `json:"vaultRole"`
@@ -61,7 +61,7 @@ type VaultConnectionStatus struct {
 	Conditions []metav1.Condition `json:"conditions,omitempty"`
 }
 
-// VaultConnection is the Schema for the vaultconnections API
+//
 //+kubebuilder:object:root=true
 //+kubebuilder:subresource:status
 //+kubebuilder:resource:scope=Cluster

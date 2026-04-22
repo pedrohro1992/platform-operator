@@ -38,8 +38,7 @@ import (
 	esv1 "github.com/external-secrets/external-secrets/apis/externalsecrets/v1"
 
 	securityv1alpha1 "platform.io/platform-operator/api/security/v1alpha1"
-
-	securityctrl "platform.io/platform-operator/internal/controller/security"
+	securitycontroller "platform.io/platform-operator/internal/controller/security"
 	// +kubebuilder:scaffold:imports
 )
 
@@ -183,7 +182,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	if err := (&securityctrl.VaultConnectionReconciler{
+	if err := (&securitycontroller.VaultConnectionReconciler{
 		Client: mgr.GetClient(),
 		Scheme: mgr.GetScheme(),
 	}).SetupWithManager(mgr); err != nil {

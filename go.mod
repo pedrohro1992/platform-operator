@@ -3,7 +3,7 @@ module platform.io/platform-operator
 go 1.25.7
 
 require (
-	github.com/external-secrets/external-secrets/apis v0.0.0-20260225105054-fea5257d83ec
+	github.com/external-secrets/external-secrets/apis v0.0.0-20260227153445-1dd00cf57ca7
 	github.com/onsi/ginkgo/v2 v2.27.2
 	github.com/onsi/gomega v1.38.2
 	k8s.io/apimachinery v0.35.0

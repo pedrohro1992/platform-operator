@@ -6,6 +6,11 @@ cliVersion: 4.10.1
 domain: platform.io
 layout:
 - go.kubebuilder.io/v4
+multigroup: true
+plugins:
+  helm.kubebuilder.io/v2-alpha:
+    manifests: dist/install.yaml
+    output: dist
 projectName: platform-operator
 repo: platform.io/platform-operator
 resources:
@@ -16,6 +21,6 @@ resources:
   domain: platform.io
   group: security
   kind: VaultConnection
-  path: platform.io/platform-operator/api/v1alpha1
+  path: platform.io/platform-operator/api/security/v1alpha1
   version: v1alpha1
 version: "3"

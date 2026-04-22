@@ -86,6 +86,6 @@ func (r *VaultConnectionReconciler) Reconcile(ctx context.Context, req ctrl.Requ
 func (r *VaultConnectionReconciler) SetupWithManager(mgr ctrl.Manager) error {
 	return ctrl.NewControllerManagedBy(mgr).
 		For(&securityv1alpha1.VaultConnection{}).
-		Named("vaultconnection").
+		Named("security-vaultconnection").
 		Complete(r)
 }
