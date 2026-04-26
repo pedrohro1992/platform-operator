@@ -35,9 +35,12 @@ import (
 	metricsserver "sigs.k8s.io/controller-runtime/pkg/metrics/server"
 	"sigs.k8s.io/controller-runtime/pkg/webhook"
 
+	cnpgv1 "github.com/cloudnative-pg/cloudnative-pg/api/v1"
 	esv1 "github.com/external-secrets/external-secrets/apis/externalsecrets/v1"
 
+	databasev1alpha1 "platform.io/platform-operator/api/database/v1alpha1"
 	securityv1alpha1 "platform.io/platform-operator/api/security/v1alpha1"
+	databasecontroller "platform.io/platform-operator/internal/controller/database"
 	securitycontroller "platform.io/platform-operator/internal/controller/security"
 	// +kubebuilder:scaffold:imports
 )
@@ -53,6 +56,8 @@ func init() {
 	utilruntime.Must(securityv1alpha1.AddToScheme(scheme))
 
 	utilruntime.Must(esv1.AddToScheme(scheme))
+	utilruntime.Must(cnpgv1.AddToScheme(scheme))
+	utilruntime.Must(databasev1alpha1.AddToScheme(scheme))
 	// +kubebuilder:scaffold:scheme
 }
 
@@ -187,6 +192,13 @@ func main() {
 		Scheme: mgr.GetScheme(),
 	}).SetupWithManager(mgr); err != nil {
 		setupLog.Error(err, "unable to create controller", "controller", "VaultConnection")
+		os.Exit(1)
+	}
+	if err := (&databasecontroller.PGDatabaseReconciler{
+		Client: mgr.GetClient(),
+		Scheme: mgr.GetScheme(),
+	}).SetupWithManager(mgr); err != nil {
+		setupLog.Error(err, "unable to create controller", "controller", "PGDatabase")
 		os.Exit(1)
 	}
 	// +kubebuilder:scaffold:builder

@@ -22,6 +22,9 @@ resources:
 # default, aiding admins in cluster management. Those roles are
 # not used by the platform-operator itself. You can comment the following lines
 # if you do not want those helpers be installed with your Project.
+- database_pgdatabase_admin_role.yaml
+- database_pgdatabase_editor_role.yaml
+- database_pgdatabase_viewer_role.yaml
 - security_vaultconnection_admin_role.yaml
 - security_vaultconnection_editor_role.yaml
 - security_vaultconnection_viewer_role.yaml

@@ -5,9 +5,41 @@ metadata:
   name: manager-role
 rules:
 - apiGroups:
+  - database.yourdomain.com
+  resources:
+  - pgdatabases
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - database.yourdomain.com
+  resources:
+  - pgdatabases/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
   - external-secrets.io
   resources:
   - clustersecretstores
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - postgresql.cnpg.io
+  resources:
+  - clusters
   verbs:
   - create
   - delete

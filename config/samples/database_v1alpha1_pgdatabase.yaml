@@ -1,0 +1,9 @@
+apiVersion: database.platform.io/v1alpha1
+kind: PGDatabase
+metadata:
+  name: homelab-db
+  namespace: default
+spec:
+  instances: 3
+  storageSize: "2Gi"
+  version: "16"

@@ -1,4 +1,5 @@
 ## Append samples of your project ##
 resources:
 - security_v1alpha1_vaultconnection.yaml
+- database_v1alpha1_pgdatabase.yaml
 # +kubebuilder:scaffold:manifestskustomizesamples

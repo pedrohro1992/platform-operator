@@ -3,6 +3,7 @@
 # It should be run by config/default
 resources:
 - bases/security.platform.io_vaultconnections.yaml
+- bases/database.platform.io_pgdatabases.yaml
 # +kubebuilder:scaffold:crdkustomizeresource
 
 patches:
