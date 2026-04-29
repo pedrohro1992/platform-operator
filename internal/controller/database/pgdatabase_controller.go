@@ -25,9 +25,9 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/log"
 
 	databasev1alpha1 "platform.io/platform-operator/api/database/v1alpha1"
+	"platform.io/platform-operator/internal/resources/database"
 
 	cnpgv1 "github.com/cloudnative-pg/cloudnative-pg/api/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 // PGDatabaseReconciler reconciles a PGDatabase object
@@ -36,12 +36,13 @@ type PGDatabaseReconciler struct {
 	Scheme *runtime.Scheme
 }
 
-//+kubebuilder:rbac:groups=database.yourdomain.com,resources=pgdatabases,verbs=get;list;watch;create;update;patch;delete
-//+kubebuilder:rbac:groups=database.yourdomain.com,resources=pgdatabases/status,verbs=get;update;patch
+//+kubebuilder:rbac:groups=database.platform.io/v1alpha1,resources=pgdatabases,verbs=get;list;watch;create;update;patch;delete
+//+kubebuilder:rbac:groups=database.platform.io/v1alpha1,resources=pgdatabases/status,verbs=get;update;patch
 //+kubebuilder:rbac:groups=postgresql.cnpg.io,resources=clusters,verbs=get;list;watch;create;update;patch;delete
 
 func (r *PGDatabaseReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
 	l := log.FromContext(ctx)
+	l.Info("Reconciling PGDatabase")
 
 	// 1. Fetch the PGDatabase instance
 	var pgDb databasev1alpha1.PGDatabase
@@ -50,20 +51,7 @@ func (r *PGDatabaseReconciler) Reconcile(ctx context.Context, req ctrl.Request) 
 	}
 
 	// 2. Define the desired CNPG Cluster object
-	desiredCluster := &cnpgv1.Cluster{
-		ObjectMeta: metav1.ObjectMeta{
-			Name:      pgDb.Name,
-			Namespace: pgDb.Namespace,
-		},
-		Spec: cnpgv1.ClusterSpec{
-			Instances: int(pgDb.Spec.Instances),
-			StorageConfiguration: cnpgv1.StorageConfiguration{
-				Size: pgDb.Spec.StorageSize,
-			},
-			// Simplification: Using the version as the image tag
-			ImageName: "ghcr.io/cloudnative-pg/postgresql:" + pgDb.Spec.Version,
-		},
-	}
+	desiredCluster := database.SyncCNPGCluster(&pgDb)
 
 	// 3. Set PGDatabase as the owner of the Cluster
 	// This ensures that if PGDatabase is deleted, the Cluster is also deleted
@@ -71,18 +59,11 @@ func (r *PGDatabaseReconciler) Reconcile(ctx context.Context, req ctrl.Request) 
 		return ctrl.Result{}, err
 	}
 
-	// 4. Logic to Create or Update the Cluster (Simplified Server-Side Apply style)
-	var existingCluster cnpgv1.Cluster
-	err := r.Get(ctx, client.ObjectKey{Name: desiredCluster.Name, Namespace: desiredCluster.Namespace}, &existingCluster)
+	// 4. Applies to the cluster using Server-Side Apply
+	err := r.Client.Patch(ctx, desiredCluster, client.Apply, client.FieldOwner("platform-operator"), client.ForceOwnership)
 	if err != nil {
-		if client.IgnoreNotFound(err) == nil {
-			l.Info("Creating a new CNPG Cluster")
-			return ctrl.Result{}, r.Create(ctx, desiredCluster)
-		}
 		return ctrl.Result{}, err
 	}
-
-	// Logic to update existingCluster would go here if needed...
 
 	return ctrl.Result{}, nil
 }
