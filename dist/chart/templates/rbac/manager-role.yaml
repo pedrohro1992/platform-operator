@@ -4,6 +4,38 @@ metadata:
     name: platform-operator-manager-role
 rules:
     - apiGroups:
+        - database.platform.io
+      resources:
+        - pgdatabases
+      verbs:
+        - create
+        - delete
+        - get
+        - list
+        - patch
+        - update
+        - watch
+    - apiGroups:
+        - database.platform.io
+      resources:
+        - pgdatabases/status
+      verbs:
+        - get
+        - patch
+        - update
+    - apiGroups:
+        - postgresql.cnpg.io
+      resources:
+        - clusters
+      verbs:
+        - create
+        - delete
+        - get
+        - list
+        - patch
+        - update
+        - watch
+    - apiGroups:
         - external-secrets.io
       resources:
         - clustersecretstores

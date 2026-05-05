@@ -36,8 +36,8 @@ type PGDatabaseReconciler struct {
 	Scheme *runtime.Scheme
 }
 
-//+kubebuilder:rbac:groups=database.platform.io/v1alpha1,resources=pgdatabases,verbs=get;list;watch;create;update;patch;delete
-//+kubebuilder:rbac:groups=database.platform.io/v1alpha1,resources=pgdatabases/status,verbs=get;update;patch
+//+kubebuilder:rbac:groups=database.platform.io,resources=pgdatabases,verbs=get;list;watch;create;update;patch;delete
+//+kubebuilder:rbac:groups=database.platform.io,resources=pgdatabases/status,verbs=get;update;patch
 //+kubebuilder:rbac:groups=postgresql.cnpg.io,resources=clusters,verbs=get;list;watch;create;update;patch;delete
 
 func (r *PGDatabaseReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
